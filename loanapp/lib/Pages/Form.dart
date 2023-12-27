@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:loanapp/Component/radiobutton.dart';
 import 'package:loanapp/Component/userinput.dart';
@@ -132,8 +130,7 @@ class _UserInputFormState extends State<UserInputForm> {
                                 height: 20,
                               ),
                               TextInput(
-                                hintText:
-                                    "Please Enter the Months you want the loan for.",
+                                hintText: "Please Enter terms in Months.",
                                 labelText: 'Loan Term',
                                 displayIcon:
                                     const Icon(Icons.calendar_month_outlined),

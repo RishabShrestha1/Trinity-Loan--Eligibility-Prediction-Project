@@ -1,8 +1,8 @@
 class UserData {
-  final int Dependent;
-  final int Income;
-  final double term;
-  final double cibil;
+  final int dependent;
+  final int income;
+  final int term;
+  final int cibil;
   final double residential;
   final double commecial;
   final double luxury;
@@ -11,8 +11,8 @@ class UserData {
   final int selfemployed;
 
   UserData({
-    required this.Dependent,
-    required this.Income,
+    required this.dependent,
+    required this.income,
     required this.term,
     required this.cibil,
     required this.residential,

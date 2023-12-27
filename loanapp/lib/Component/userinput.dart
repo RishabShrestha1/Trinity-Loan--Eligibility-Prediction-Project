@@ -7,6 +7,7 @@ class TextInput extends StatelessWidget {
   final String? Function(String?)? customvalidator;
   final TextEditingController controller;
   final TextInputType? keyboardType;
+  final String? prefixtext;
   const TextInput({
     Key? key,
     required this.hintText,
@@ -15,6 +16,7 @@ class TextInput extends StatelessWidget {
     this.customvalidator,
     required this.controller,
     this.keyboardType,
+    this.prefixtext,
   }) : super(key: key);
 
   @override
@@ -27,6 +29,14 @@ class TextInput extends StatelessWidget {
             displayIcon.icon,
             color: Colors.white,
           ),
+          prefix: prefixtext != null
+              ? Text(
+                  '$prefixtext   ',
+                  style: const TextStyle(
+                    color: Color.fromARGB(255, 0, 0, 0),
+                  ),
+                )
+              : null,
           contentPadding:
               const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
           border: OutlineInputBorder(

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:loanapp/Component/radiobutton.dart';
 import 'package:loanapp/Component/userinput.dart';
@@ -16,30 +18,30 @@ class _UserInputFormState extends State<UserInputForm> {
   final TextEditingController dependentController = TextEditingController();
   final TextEditingController annualIncomeController = TextEditingController();
   final TextEditingController loanTermController = TextEditingController();
-  final TextEditingController CibilScoreController = TextEditingController();
-  final TextEditingController ResidentialAssetValueController =
+  final TextEditingController cibilScoreController = TextEditingController();
+  final TextEditingController residentialAssetValueController =
       TextEditingController();
-  final TextEditingController CommercialAssetValueController =
+  final TextEditingController commercialAssetValueController =
       TextEditingController();
-  final TextEditingController LuxxuryAssetValueController =
+  final TextEditingController luxxuryAssetValueController =
       TextEditingController();
-  final TextEditingController BankAssetValueController =
+  final TextEditingController bankAssetValueController =
       TextEditingController();
-  int EducationStatus = 0;
-  int EmploymentStatus = 0;
+  int? educationStatus;
+  int? employmentStatus;
   void submitForm() {
     if (_formKey.currentState?.validate() ?? false) {
       final UserData userdata = UserData(
-        Dependent: int.parse(dependentController.text),
-        Income: int.parse(annualIncomeController.text),
-        term: double.parse(loanTermController.text),
-        cibil: double.parse(CibilScoreController.text),
-        residential: double.parse(ResidentialAssetValueController.text),
-        commecial: double.parse(CommercialAssetValueController.text),
-        luxury: double.parse(LuxxuryAssetValueController.text),
-        bank: double.parse(BankAssetValueController.text),
-        graduation: EducationStatus,
-        selfemployed: EmploymentStatus,
+        dependent: int.parse(dependentController.text),
+        income: int.parse(annualIncomeController.text),
+        term: int.parse(loanTermController.text),
+        cibil: int.parse(cibilScoreController.text),
+        residential: double.parse(residentialAssetValueController.text),
+        commecial: double.parse(commercialAssetValueController.text),
+        luxury: double.parse(luxxuryAssetValueController.text),
+        bank: double.parse(bankAssetValueController.text),
+        graduation: educationStatus ?? 0,
+        selfemployed: employmentStatus ?? 0,
       );
       print(userdata);
     }
@@ -58,7 +60,7 @@ class _UserInputFormState extends State<UserInputForm> {
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    Color.fromARGB(255, 197, 173, 197),
+                    const Color.fromARGB(255, 197, 173, 197),
                     Colors.blue.shade200,
                   ],
                   begin: Alignment.topCenter,
@@ -72,11 +74,11 @@ class _UserInputFormState extends State<UserInputForm> {
                     const SizedBox(
                       height: 40,
                     ),
-                    Row(
+                    const Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(Icons.calculate, size: 40, color: Colors.white),
-                        const Text(
+                        Text(
                           "Loan Eligibility Calculator",
                           style: TextStyle(
                               fontSize: 25,
@@ -99,7 +101,7 @@ class _UserInputFormState extends State<UserInputForm> {
                               TextInput(
                                 hintText: 'Enter the Number of Dependents',
                                 labelText: 'Number of Dependents',
-                                displayIcon: Icon(Icons.person),
+                                displayIcon: const Icon(Icons.person),
                                 keyboardType: TextInputType.number,
                                 customvalidator: (value) {
                                   if (value!.isEmpty) {
@@ -115,9 +117,10 @@ class _UserInputFormState extends State<UserInputForm> {
                               TextInput(
                                 hintText: 'Please enter the Annual Income',
                                 labelText: 'Annual Income',
-                                displayIcon: Icon(Icons.money),
+                                displayIcon: const Icon(Icons.money),
                                 controller: annualIncomeController,
                                 keyboardType: TextInputType.number,
+                                prefixtext: '₹',
                                 customvalidator: (value) {
                                   if (value!.isEmpty) {
                                     return 'Please enter the annual income';
@@ -133,7 +136,7 @@ class _UserInputFormState extends State<UserInputForm> {
                                     "Please Enter the Months you want the loan for.",
                                 labelText: 'Loan Term',
                                 displayIcon:
-                                    Icon(Icons.calendar_month_outlined),
+                                    const Icon(Icons.calendar_month_outlined),
                                 controller: loanTermController,
                                 keyboardType: TextInputType.number,
                                 customvalidator: (value) {
@@ -149,12 +152,16 @@ class _UserInputFormState extends State<UserInputForm> {
                               TextInput(
                                 hintText: 'Please enter your Cibil Score',
                                 labelText: 'Cibil Score',
-                                displayIcon: Icon(Icons.score),
-                                controller: CibilScoreController,
+                                displayIcon: const Icon(Icons.score),
+                                controller: cibilScoreController,
                                 keyboardType: TextInputType.number,
                                 customvalidator: (value) {
                                   if (value!.isEmpty) {
                                     return 'Please enter the Cibil Score';
+                                  } else if (int.parse(value) > 900) {
+                                    return 'Please enter a valid Cibil Score';
+                                  } else if (int.parse(value) < 300) {
+                                    return 'Please enter a valid Cibil Score';
                                   }
                                   return null;
                                 },
@@ -166,9 +173,10 @@ class _UserInputFormState extends State<UserInputForm> {
                                 hintText:
                                     'Please enter your Residential Asset Evaluation',
                                 labelText: 'Residential Asset Value',
-                                displayIcon: Icon(Icons.home),
-                                controller: ResidentialAssetValueController,
+                                displayIcon: const Icon(Icons.home),
+                                controller: residentialAssetValueController,
                                 keyboardType: TextInputType.number,
+                                prefixtext: '₹',
                                 customvalidator: (value) {
                                   if (value!.isEmpty) {
                                     return 'Please enter the Residential Evidence';
@@ -183,8 +191,8 @@ class _UserInputFormState extends State<UserInputForm> {
                                 hintText:
                                     'Please Enter the Commercial Asset Value',
                                 labelText: 'Commercial Asset Value',
-                                displayIcon: Icon(Icons.home_work_outlined),
-                                controller: CommercialAssetValueController,
+                                displayIcon: const Icon(Icons.shopping_bag),
+                                controller: commercialAssetValueController,
                                 keyboardType: TextInputType.number,
                                 customvalidator: (value) {
                                   if (value!.isEmpty) {
@@ -200,9 +208,10 @@ class _UserInputFormState extends State<UserInputForm> {
                                 hintText:
                                     'Please Enter the Luxxury Asset Value',
                                 labelText: 'Luxxury Asset Value',
-                                displayIcon: Icon(Icons.home),
-                                controller: LuxxuryAssetValueController,
+                                displayIcon: const Icon(Icons.airplane_ticket),
+                                controller: luxxuryAssetValueController,
                                 keyboardType: TextInputType.number,
+                                prefixtext: '₹',
                                 customvalidator: (value) {
                                   if (value!.isEmpty) {
                                     return 'Please enter the Luxxury Asset Value';
@@ -216,8 +225,9 @@ class _UserInputFormState extends State<UserInputForm> {
                               TextInput(
                                 hintText: 'Please Enter the Bank Asset Value',
                                 labelText: 'Bank Asset Value',
-                                displayIcon: Icon(Icons.home),
-                                controller: BankAssetValueController,
+                                displayIcon: const Icon(Icons.savings),
+                                prefixtext: '₹',
+                                controller: bankAssetValueController,
                                 keyboardType: TextInputType.number,
                                 customvalidator: (value) {
                                   if (value!.isEmpty) {
@@ -234,7 +244,7 @@ class _UserInputFormState extends State<UserInputForm> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
+                                    const Text(
                                       "Graduation Status",
                                       style: TextStyle(fontSize: 17),
                                     ),
@@ -244,20 +254,20 @@ class _UserInputFormState extends State<UserInputForm> {
                                       children: [
                                         UserChoice(
                                           value: 0,
-                                          groupValue: EducationStatus,
+                                          groupValue: educationStatus ?? 0,
                                           onChanged: (value) {
                                             setState(() {
-                                              EducationStatus = value!;
+                                              educationStatus = value!;
                                             });
                                           },
                                         ),
                                         const Text("Graduate"),
                                         UserChoice(
                                           value: 1,
-                                          groupValue: EducationStatus,
+                                          groupValue: educationStatus ?? 0,
                                           onChanged: (value) {
                                             setState(() {
-                                              EducationStatus = value!;
+                                              educationStatus = value!;
                                             });
                                           },
                                         ),
@@ -275,7 +285,7 @@ class _UserInputFormState extends State<UserInputForm> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
+                                    const Text(
                                       "Self Employed Status",
                                       style: TextStyle(fontSize: 17),
                                     ),
@@ -285,22 +295,22 @@ class _UserInputFormState extends State<UserInputForm> {
                                       children: [
                                         UserChoice(
                                           value: 0,
-                                          groupValue: EmploymentStatus,
+                                          groupValue: employmentStatus ?? 0,
                                           onChanged: (value) {
                                             setState(() {
-                                              EmploymentStatus = value!;
-                                              print(EmploymentStatus);
+                                              employmentStatus = value;
+                                              print(employmentStatus);
                                             });
                                           },
                                         ),
                                         const Text("Yes"),
                                         UserChoice(
                                           value: 1,
-                                          groupValue: EmploymentStatus,
+                                          groupValue: employmentStatus ?? 0,
                                           onChanged: (value) {
                                             setState(() {
-                                              EmploymentStatus = value!;
-                                              print(EmploymentStatus);
+                                              employmentStatus = value;
+                                              print(employmentStatus);
                                             });
                                           },
                                         ),
@@ -321,25 +331,25 @@ class _UserInputFormState extends State<UserInputForm> {
                     Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
-                        color: Color.fromARGB(255, 128, 151, 203),
+                        color: const Color.fromARGB(255, 128, 151, 203),
                       ),
                       child: ElevatedButton(
                         onPressed: () {
                           submitForm();
                         },
-                        child: const Text(
-                          "Submit",
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.black,
-                          ),
-                        ),
                         style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.transparent,
                           backgroundColor: Colors.transparent,
                           elevation: 10,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        child: const Text(
+                          "Submit",
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.black,
                           ),
                         ),
                       ),

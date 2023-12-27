@@ -6,7 +6,7 @@ class TextInput extends StatelessWidget {
   final Icon displayIcon;
   final String? Function(String?)? customvalidator;
   final TextEditingController controller;
-
+  final TextInputType? keyboardType;
   const TextInput({
     Key? key,
     required this.hintText,
@@ -14,6 +14,7 @@ class TextInput extends StatelessWidget {
     required this.displayIcon,
     this.customvalidator,
     required this.controller,
+    this.keyboardType,
   }) : super(key: key);
 
   @override
@@ -26,12 +27,21 @@ class TextInput extends StatelessWidget {
             displayIcon.icon,
             color: Colors.white,
           ),
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: const BorderSide(
+              width: 0,
+              style: BorderStyle.none,
+            ),
+          ),
           filled: true,
-          fillColor: Color.fromARGB(255, 98, 196, 111),
+          fillColor: Color.fromARGB(255, 178, 181, 224),
           label: Text(
             labelText,
             style: const TextStyle(
-              fontSize: 14,
+              fontSize: 17,
               color: Color.fromARGB(255, 0, 0, 0),
             ),
           ),
@@ -42,6 +52,7 @@ class TextInput extends StatelessWidget {
         validator: customvalidator,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         controller: controller,
+        keyboardType: keyboardType,
       ),
     );
   }
